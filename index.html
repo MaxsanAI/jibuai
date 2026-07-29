@@ -102,7 +102,7 @@
         </form>
     </footer>
 
-    <!-- Monetag Skripta postavljena na dno da ne blokira renderovanje -->
+    <!-- Monetag Skripta -->
     <script src="https://quge5.com/88/tag.min.js" data-zone="264917" async data-cfasync="false"></script>
 
     <script>
@@ -190,7 +190,6 @@
                     </div>
                 `;
             } else {
-                // AI poruka sa diskretnim Monetag CTA banerom ispod
                 html = `
                     <div class="space-y-3">
                         <div class="flex items-start space-x-3">
@@ -210,7 +209,6 @@
                                 ${escapeHtml(text)}
                             </div>
                         </div>
-                        <!-- Sponsored CTA Baner ispod AI odgovora -->
                         <div class="ml-9 max-w-[85%]">
                             <a href="https://omg10.com/4/9027972" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between bg-[#1e1f22] hover:bg-[#282a2c] border border-[#3c4043] rounded-xl px-3.5 py-2 transition text-xs">
                                 <span class="text-[#c4c7c5] flex items-center gap-2 truncate">
@@ -234,9 +232,12 @@
         }
 
         function scrollToBottom() {
-            setTimeout(() => {
-                chatWindow.scrollTop = chatWindow.scrollHeight;
-            }, 50);
+            requestAnimationFrame(() => {
+                chatWindow.scrollTo({
+                    top: chatWindow.scrollHeight,
+                    behavior: 'smooth'
+                });
+            });
         }
 
         function clearHistory() {
