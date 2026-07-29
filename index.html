@@ -4,96 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>Jibu AI – Free Smart AI Assistant, Chat & Image Generator</title>
+    <title>Jibu AI – Assistant</title>
     <link rel="canonical" href="https://jibuai.toolsnestt.com/">
-
-    <!-- Monetag Skripta -->
-    <script src="https://quge5.com/88/tag.min.js" data-zone="264917" async data-cfasync="false"></script>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap');
         
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         html, body {
+            width: 100%;
             height: 100%;
             height: 100dvh;
             margin: 0;
             padding: 0;
             overflow: hidden;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #020617;
-            color: #f1f5f9;
+            font-family: 'Google Sans', sans-serif, system-ui;
+            background-color: #131314;
+            color: #e3e3e3;
         }
 
-        .chat-container::-webkit-scrollbar { width: 4px; }
-        .chat-container::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
+        /* Fluidan Gemini skrol */
+        .chat-scroll {
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-y: contain;
+        }
+
+        .chat-scroll::-webkit-scrollbar { width: 4px; }
+        .chat-scroll::-webkit-scrollbar-thumb { background: #444746; border-radius: 10px; }
         
-        input, button, textarea { font-size: 16px !important; }
+        input { font-size: 16px !important; }
+
+        /* Gemini gradient animacija za logo */
+        .gemini-gradient {
+            background: linear-gradient(135deg, #9bb7df, #d0bcff, #f8bbd0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
 </head>
 <body class="flex flex-col justify-between">
 
-    <!-- Header -->
-    <header class="bg-slate-900 border-b border-slate-800 p-3 flex items-center justify-between shrink-0 z-10">
-        <div class="flex items-center space-x-2.5">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-500 to-violet-600 flex items-center justify-center font-bold text-sm text-white shadow">
-                J
+    <!-- Gemini Header -->
+    <header class="bg-[#131314] px-4 py-3 flex items-center justify-between shrink-0 z-20 border-b border-[#282a2c]">
+        <div class="flex items-center space-x-3">
+            <div class="w-7 h-7 flex items-center justify-center">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 24C12 17.3726 17.3726 12 24 12C17.3726 12 12 6.62742 12 0C12 6.62742 6.62742 12 0 12C6.62742 12 12 17.3726 12 24Z" fill="url(#paint0_linear)"/>
+                    <defs>
+                        <linearGradient id="paint0_linear" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#99c3ff"/>
+                            <stop offset="0.5" stop-color="#c4b5fd"/>
+                            <stop offset="1" stop-color="#fbcfe8"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
             </div>
-            <div>
-                <h1 class="font-bold text-sm leading-tight">Jibu AI</h1>
-                <p class="text-[10px] text-emerald-400 flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Online
-                </p>
-            </div>
+            <h1 class="font-medium text-base tracking-wide gemini-gradient">Jibu AI</h1>
         </div>
-        <button onclick="clearHistory()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700 transition">
-            Clear 🗑️
+        <button onclick="clearHistory()" class="text-xs text-[#c4c7c5] bg-[#1e1f22] hover:bg-[#282a2c] px-3 py-1.5 rounded-full transition">
+            New chat ＋
         </button>
     </header>
 
     <!-- Chat Message Area -->
-    <main id="chatWindow" class="chat-container flex-1 overflow-y-auto p-3 space-y-3 max-w-2xl w-full mx-auto">
+    <main id="chatWindow" class="chat-scroll flex-1 p-4 space-y-6 max-w-2xl w-full mx-auto">
         <!-- Poruke se ucitavaju ovde -->
     </main>
 
-    <!-- Sponsored CTA Baner -->
-    <div class="max-w-2xl w-full mx-auto px-3 py-1 shrink-0">
-        <a href="https://omg10.com/4/9027972" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between bg-indigo-950/40 hover:bg-indigo-950/70 border border-indigo-500/30 rounded-lg px-3 py-1.5 transition text-xs">
-            <span class="text-slate-300 flex items-center gap-1.5 truncate">
-                <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-ping shrink-0"></span>
-                <span>🔥 <strong class="text-indigo-300">Sponsored Tool:</strong> Discover exclusive offers</span>
-            </span>
-            <span class="text-indigo-400 font-semibold shrink-0 ml-2">Open &rarr;</span>
-        </a>
+    <!-- Quick Prompts (Gemini Chips) -->
+    <div class="max-w-2xl w-full mx-auto px-4 py-2 shrink-0 flex gap-2 overflow-x-auto no-scrollbar z-10">
+        <button onclick="sendQuickPrompt('Write a professional CV summary')" class="text-xs bg-[#1e1f22] hover:bg-[#282a2c] text-[#e3e3e3] border border-[#3c4043] px-3.5 py-1.5 rounded-xl whitespace-nowrap transition">📝 CV Summary</button>
+        <button onclick="sendQuickPrompt('Explain how small business works')" class="text-xs bg-[#1e1f22] hover:bg-[#282a2c] text-[#e3e3e3] border border-[#3c4043] px-3.5 py-1.5 rounded-xl whitespace-nowrap transition">💡 Business Tip</button>
+        <button onclick="triggerImagePrompt()" class="text-xs bg-[#1e1f22] hover:bg-[#282a2c] text-[#d0bcff] border border-[#4f378b] px-3.5 py-1.5 rounded-xl whitespace-nowrap transition">🎨 Generate Image</button>
     </div>
 
-    <!-- Quick Prompts & Image Counter -->
-    <div class="max-w-2xl w-full mx-auto px-3 pb-1.5 shrink-0 flex items-center justify-between gap-2 overflow-x-auto">
-        <div class="flex gap-1.5 shrink-0">
-            <button onclick="sendQuickPrompt('Write a professional CV summary')" class="text-[11px] bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 px-2.5 py-1 rounded-full whitespace-nowrap transition">📝 CV</button>
-            <button onclick="sendQuickPrompt('Explain how small business works')" class="text-[11px] bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 px-2.5 py-1 rounded-full whitespace-nowrap transition">💡 Business</button>
-            <button onclick="triggerImagePrompt()" class="text-[11px] bg-violet-600/30 hover:bg-violet-600/50 border border-violet-500/50 text-violet-300 px-2.5 py-1 rounded-full whitespace-nowrap transition">🎨 Image</button>
-        </div>
-        <span id="imageCounterBadge" class="text-[10px] text-slate-400 bg-slate-900 px-2 py-0.5 rounded-full border border-slate-800 shrink-0">5/5 left</span>
-    </div>
-
-    <!-- Input Bar -->
-    <footer class="bg-slate-900 border-t border-slate-800 p-2.5 shrink-0">
-        <form id="chatForm" onsubmit="handleFormSubmit(event)" class="max-w-2xl mx-auto flex items-center gap-2 w-full">
+    <!-- Gemini Input Bar -->
+    <footer class="bg-[#131314] p-3 shrink-0 z-20">
+        <form id="chatForm" onsubmit="handleFormSubmit(event)" class="max-w-2xl mx-auto bg-[#1e1f22] border border-[#3c4043] focus-within:border-[#8ab4f8] rounded-3xl px-4 py-2.5 flex items-center gap-3 transition">
             <input 
                 type="text" 
                 id="userInput" 
-                placeholder="Type message or image prompt..." 
+                placeholder="Enter a prompt here..." 
                 autocomplete="off"
                 required
-                class="min-w-0 flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-500 text-slate-100 placeholder-slate-500 transition"
+                class="min-w-0 flex-1 bg-transparent text-[#e3e3e3] placeholder-[#8e918f] text-sm focus:outline-none"
             >
             <button 
                 type="submit" 
                 id="sendBtn"
-                class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl font-medium text-sm transition shrink-0 shadow">
-                Send
+                class="w-9 h-9 bg-[#8ab4f8] hover:bg-[#aecbfa] text-[#131314] rounded-full flex items-center justify-center transition shrink-0">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
+                </svg>
             </button>
         </form>
     </footer>
@@ -102,17 +107,14 @@
         const chatWindow = document.getElementById('chatWindow');
         const userInput = document.getElementById('userInput');
         const sendBtn = document.getElementById('sendBtn');
-        const imageCounterBadge = document.getElementById('imageCounterBadge');
 
-        let messageHistory = JSON.parse(localStorage.getItem('jibu_chat_history')) || [];
+        let messageHistory = JSON.parse(localStorage.getItem('jibu_gemini_history')) || [];
 
         window.addEventListener('DOMContentLoaded', () => {
             userInput.value = '';
-            updateImageLimitUI();
-            
             chatWindow.innerHTML = '';
             if (messageHistory.length === 0) {
-                appendMessage("Hello! I am Jibu AI. Chat with me or use the button above to generate free AI images daily!", 'ai', false);
+                appendMessage("Hello! I'm your Jibu AI assistant. How can I help you today?", 'ai', false);
             } else {
                 messageHistory.forEach(msg => {
                     const sender = msg.role === 'user' ? 'user' : 'ai';
@@ -125,29 +127,6 @@
             }
         });
 
-        function checkDailyImageLimit() {
-            const today = new Date().toDateString();
-            let usageData = JSON.parse(localStorage.getItem('jibu_image_usage')) || { date: today, count: 0 };
-            if (usageData.date !== today) usageData = { date: today, count: 0 };
-            return usageData.count < 5;
-        }
-
-        function incrementImageUsage() {
-            const today = new Date().toDateString();
-            let usageData = JSON.parse(localStorage.getItem('jibu_image_usage')) || { date: today, count: 0 };
-            if (usageData.date !== today) usageData = { date: today, count: 0 };
-            usageData.count += 1;
-            localStorage.setItem('jibu_image_usage', JSON.stringify(usageData));
-            updateImageLimitUI();
-        }
-
-        function updateImageLimitUI() {
-            const today = new Date().toDateString();
-            let usageData = JSON.parse(localStorage.getItem('jibu_image_usage')) || { date: today, count: 0 };
-            if (usageData.date !== today) usageData.count = 0;
-            imageCounterBadge.innerText = `${5 - usageData.count}/5 left`;
-        }
-
         function sendQuickPrompt(text) {
             userInput.value = text;
             processMessage(text, 'chat');
@@ -159,11 +138,6 @@
                 alert("Type what kind of image you want in the input box first!");
                 return;
             }
-            if (!checkDailyImageLimit()) {
-                alert("You reached your daily limit of 5 free AI images.");
-                return;
-            }
-            incrementImageUsage();
             processMessage(text, 'image');
             userInput.value = '';
         }
@@ -222,12 +196,27 @@
 
         function appendMessage(text, sender, saveToStorage) {
             const isUser = sender === 'user';
-            const html = `
-                <div class="flex items-start space-x-2.5 ${isUser ? 'flex-row-reverse space-x-reverse' : ''}">
-                    <div class="w-7 h-7 rounded-lg ${isUser ? 'bg-violet-600' : 'bg-indigo-600'} flex items-center justify-center shrink-0 text-xs font-bold text-white shadow">
-                        ${isUser ? 'U' : 'AI'}
+            const html = isUser ? `
+                <div class="flex justify-end">
+                    <div class="bg-[#2b2c2f] text-[#e3e3e3] rounded-3xl px-4 py-3 text-sm max-w-[85%] leading-relaxed">
+                        ${escapeHtml(text)}
                     </div>
-                    <div class="${isUser ? 'bg-indigo-600 text-white rounded-tr-none' : 'bg-slate-900 border border-slate-800 text-slate-200 rounded-tl-none'} rounded-xl p-3 text-sm max-w-[85%] leading-relaxed shadow-sm">
+                </div>
+            ` : `
+                <div class="flex items-start space-x-3">
+                    <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 24C12 17.3726 17.3726 12 24 12C17.3726 12 12 6.62742 12 0C12 6.62742 6.62742 12 0 12C6.62742 12 12 17.3726 12 24Z" fill="url(#paint_ai)"/>
+                            <defs>
+                                <linearGradient id="paint_ai" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#99c3ff"/>
+                                    <stop offset="0.5" stop-color="#c4b5fd"/>
+                                    <stop offset="1" stop-color="#fbcfe8"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <div class="text-[#e3e3e3] text-sm max-w-[85%] leading-relaxed pt-0.5">
                         ${escapeHtml(text)}
                     </div>
                 </div>
@@ -237,19 +226,29 @@
 
             if (saveToStorage) {
                 messageHistory.push({ role: isUser ? 'user' : 'assistant', content: text, type: 'chat' });
-                localStorage.setItem('jibu_chat_history', JSON.stringify(messageHistory));
+                localStorage.setItem('jibu_gemini_history', JSON.stringify(messageHistory));
             }
         }
 
         function appendImageMessage(url, promptText, saveToStorage) {
             const html = `
-                <div class="flex items-start space-x-2.5">
-                    <div class="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center shrink-0 text-xs font-bold text-white">AI</div>
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl rounded-tl-none p-2.5 max-w-[85%] shadow-sm space-y-1.5">
-                        <p class="text-xs text-slate-400">"${escapeHtml(promptText)}"</p>
-                        <div class="relative inline-block w-full overflow-hidden rounded-lg border border-slate-800">
-                            <img src="${url}" alt="AI Generated Image" class="w-full object-cover max-h-60 block">
-                            <div class="absolute bottom-1.5 right-1.5 bg-black/60 px-1.5 py-0.5 rounded text-[9px] text-white/90">JibuAI</div>
+                <div class="flex items-start space-x-3">
+                    <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 24C12 17.3726 17.3726 12 24 12C17.3726 12 12 6.62742 12 0C12 6.62742 6.62742 12 0 12C6.62742 12 12 17.3726 12 24Z" fill="url(#paint_ai_img)"/>
+                            <defs>
+                                <linearGradient id="paint_ai_img" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#99c3ff"/>
+                                    <stop offset="0.5" stop-color="#c4b5fd"/>
+                                    <stop offset="1" stop-color="#fbcfe8"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <div class="space-y-2 max-w-[85%]">
+                        <p class="text-xs text-[#8e918f]">"${escapeHtml(promptText)}"</p>
+                        <div class="overflow-hidden rounded-2xl border border-[#3c4043]">
+                            <img src="${url}" alt="AI Generated Image" class="w-full object-cover max-h-64 block">
                         </div>
                     </div>
                 </div>
@@ -259,7 +258,7 @@
 
             if (saveToStorage) {
                 messageHistory.push({ role: 'assistant', content: promptText, type: 'image', url: url });
-                localStorage.setItem('jibu_chat_history', JSON.stringify(messageHistory));
+                localStorage.setItem('jibu_gemini_history', JSON.stringify(messageHistory));
             }
         }
 
@@ -270,20 +269,31 @@
         }
 
         function clearHistory() {
-            localStorage.removeItem('jibu_chat_history');
+            localStorage.removeItem('jibu_gemini_history');
             messageHistory = [];
             chatWindow.innerHTML = '';
             userInput.value = '';
-            appendMessage("Chat cleared. How can I help you?", 'ai', false);
+            appendMessage("Chat cleared. How can I help you today?", 'ai', false);
         }
 
         function appendLoading(text) {
             const id = 'loading-' + Date.now();
             const html = `
-                <div id="${id}" class="flex items-start space-x-2.5">
-                    <div class="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center shrink-0 text-xs font-bold text-white">AI</div>
-                    <div class="bg-slate-900 border border-slate-800 rounded-xl rounded-tl-none p-3 text-xs text-slate-300 flex items-center space-x-2">
-                        <span class="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce"></span>
+                <div id="${id}" class="flex items-start space-x-3">
+                    <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 24C12 17.3726 17.3726 12 24 12C17.3726 12 12 6.62742 12 0C12 6.62742 6.62742 12 0 12C6.62742 12 12 17.3726 12 24Z" fill="url(#paint_load)"/>
+                            <defs>
+                                <linearGradient id="paint_load" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#99c3ff"/>
+                                    <stop offset="0.5" stop-color="#c4b5fd"/>
+                                    <stop offset="1" stop-color="#fbcfe8"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <div class="text-sm text-[#8e918f] flex items-center space-x-2 pt-0.5">
+                        <span class="w-1.5 h-1.5 bg-[#8ab4f8] rounded-full animate-bounce"></span>
                         <span>${text}</span>
                     </div>
                 </div>
