@@ -4,30 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- PRIMARY SEO META TAGS -->
-    <title>Jibu AI – Free Smart AI Assistant & Chatbot</title>
-    <meta name="title" content="Jibu AI – Free Smart AI Assistant & Chatbot">
-    <meta name="description" content="Meet Jibu AI, your lightning-fast, mobile-friendly AI assistant. Ask questions, write content, draft emails, and get instant answers completely free.">
-    <meta name="keywords" content="Jibu AI, AI chatbot, free AI assistant, smart chat, cloudflare ai chatbot, write CV with AI, online AI helper">
-    <meta name="author" content="Tools Nestt">
-    <meta name="robots" content="index, follow">
+    <title>Jibu AI – Free Smart AI Assistant, Chat & Image Generator</title>
+    <meta name="title" content="Jibu AI – Free Smart AI Assistant, Chat & Image Generator">
+    <meta name="description" content="Meet Jibu AI, your lightning-fast, mobile-friendly AI assistant. Ask questions, generate AI images, and get instant answers completely free.">
     <link rel="canonical" href="https://jibuai.toolsnestt.com/">
 
-    <!-- OPEN GRAPH / FACEBOOK / WHATSAPP -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://jibuai.toolsnestt.com/">
-    <meta property="og:title" content="Jibu AI – Free Smart AI Assistant & Chatbot">
-    <meta property="og:description" content="Meet Jibu AI, your lightning-fast, mobile-friendly AI assistant. Get instant answers and smart help on the go.">
-    <meta property="og:image" content="https://jibuai.toolsnestt.com/og-image.png">
-
-    <!-- TWITTER -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://jibuai.toolsnestt.com/">
-    <meta property="twitter:title" content="Jibu AI – Free Smart AI Assistant & Chatbot">
-    <meta property="twitter:description" content="Meet Jibu AI, your lightning-fast, mobile-friendly AI assistant. Get instant answers and smart help on the go.">
-    <meta property="twitter:image" content="https://jibuai.toolsnestt.com/og-image.png">
-
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
@@ -45,36 +26,38 @@
                 J
             </div>
             <div>
-                <h1 class="font-bold text-base leading-tight tracking-wide">Jibu AI</h1>
+                <h1 class="font-bold text-base leading-tight tracking-wide">Jibu AI Studio</h1>
                 <p class="text-xs text-emerald-400 flex items-center gap-1.5 mt-0.5">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Online & Ready
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Chat & Image Ready
                 </p>
             </div>
         </div>
         <button onclick="clearHistory()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700/50 transition">
-            Clear Chat 🗑️
+            Clear 🗑️
         </button>
     </header>
 
     <!-- Chat Message Area -->
     <main id="chatWindow" class="chat-container flex-1 overflow-y-auto p-4 space-y-4 max-w-2xl w-full mx-auto">
-        <!-- Poruke se ucitavaju dinamički -->
+        <!-- Poruke -->
     </main>
 
-    <!-- Monetag Multi-Tag / Oglasni prostor -->
+    <!-- Monetag oglasni prostor -->
     <div class="max-w-2xl w-full mx-auto px-4 py-1 shrink-0">
         <div class="bg-slate-900/40 border border-slate-800/50 rounded-xl p-2 text-center text-xs text-slate-500">
-            <!-- UBACITE VAŠ MONETAG MULTI-TAG KOD ISPOD OVOG KOMENTARA -->
-            <!-- Primer: <script src="https://alwingulla.com/88/tag.min.js" data-zone="YOUR_ZONE_ID" async></script> -->
+            <!-- UBACITE VAŠ MONETAG KOD OVDE -->
             <span class="opacity-60">Sponsored Ad Space</span>
         </div>
     </div>
 
-    <!-- Quick Prompts -->
-    <div class="max-w-2xl w-full mx-auto px-4 pb-2 flex gap-2 overflow-x-auto no-scrollbar shrink-0">
-        <button onclick="sendQuickPrompt('Write a professional CV summary')" class="text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 px-3 py-1.5 rounded-full whitespace-nowrap transition">📝 Write CV</button>
-        <button onclick="sendQuickPrompt('Explain how small business works')" class="text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 px-3 py-1.5 rounded-full whitespace-nowrap transition">💡 Start Business</button>
-        <button onclick="sendQuickPrompt('Translate hello to Luganda and Swahili')" class="text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 px-3 py-1.5 rounded-full whitespace-nowrap transition">🌍 Local Greeting</button>
+    <!-- Quick Prompts & Image Generator Trigger -->
+    <div class="max-w-2xl w-full mx-auto px-4 pb-2 flex gap-2 overflow-x-auto no-scrollbar shrink-0 items-center justify-between">
+        <div class="flex gap-2 overflow-x-auto">
+            <button onclick="sendQuickPrompt('Write a professional CV summary')" class="text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 px-3 py-1.5 rounded-full whitespace-nowrap transition">📝 Write CV</button>
+            <button onclick="sendQuickPrompt('Explain how small business works')" class="text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 px-3 py-1.5 rounded-full whitespace-nowrap transition">💡 Start Business</button>
+            <button onclick="triggerImagePrompt()" class="text-xs bg-violet-600/30 hover:bg-violet-600/50 border border-violet-500/50 text-violet-300 px-3 py-1.5 rounded-full whitespace-nowrap transition">🎨 Generate Image</button>
+        </div>
+        <span id="imageCounterBadge" class="text-[11px] text-slate-400 bg-slate-900 px-2.5 py-1 rounded-full border border-slate-800 shrink-0">Images: 5/5 left</span>
     </div>
 
     <!-- Input Bar -->
@@ -83,7 +66,7 @@
             <input 
                 type="text" 
                 id="userInput" 
-                placeholder="Type your message here..." 
+                placeholder="Type message or image prompt..." 
                 autocomplete="off"
                 required
                 class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-indigo-500 text-slate-100 placeholder-slate-500 transition"
@@ -101,20 +84,72 @@
         const chatWindow = document.getElementById('chatWindow');
         const userInput = document.getElementById('userInput');
         const sendBtn = document.getElementById('sendBtn');
+        const imageCounterBadge = document.getElementById('imageCounterBadge');
 
         let messageHistory = JSON.parse(localStorage.getItem('jibu_chat_history')) || [];
 
         window.addEventListener('DOMContentLoaded', () => {
+            updateImageLimitUI();
             if (messageHistory.length === 0) {
-                appendMessage("Hello! I am Jibu AI. How can I help you today? You can ask me anything, write emails, or solve problems!", 'ai', false);
+                appendMessage("Hello! I am Jibu AI. You can chat with me or use the button above to generate up to 5 free AI images daily!", 'ai', false);
             } else {
                 messageHistory.forEach(msg => appendMessage(msg.content, msg.role === 'user' ? 'user' : 'ai', false));
             }
         });
 
+        function checkDailyImageLimit() {
+            const today = new Date().toDateString();
+            let usageData = JSON.parse(localStorage.getItem('jibu_image_usage')) || { date: today, count: 0 };
+
+            if (usageData.date !== today) {
+                usageData = { date: today, count: 0 };
+            }
+
+            if (usageData.count >= 5) {
+                return false; // Dostignut limit
+            }
+            return true;
+        }
+
+        function incrementImageUsage() {
+            const today = new Date().toDateString();
+            let usageData = JSON.parse(localStorage.getItem('jibu_image_usage')) || { date: today, count: 0 };
+            if (usageData.date !== today) {
+                usageData = { date: today, count: 0 };
+            }
+            usageData.count += 1;
+            localStorage.setItem('jibu_image_usage', JSON.stringify(usageData));
+            updateImageLimitUI();
+        }
+
+        function updateImageLimitUI() {
+            const today = new Date().toDateString();
+            let usageData = JSON.parse(localStorage.getItem('jibu_image_usage')) || { date: today, count: 0 };
+            if (usageData.date !== today) usageData.count = 0;
+            const remaining = 5 - usageData.count;
+            imageCounterBadge.innerText = `Images: ${remaining}/5 left`;
+        }
+
         function sendQuickPrompt(text) {
             userInput.value = text;
-            processMessage(text);
+            processMessage(text, 'chat');
+        }
+
+        function triggerImagePrompt() {
+            const text = userInput.value.trim();
+            if (!text) {
+                alert("Please type what kind of image you want in the input box first (e.g. 'A futuristic city')!");
+                return;
+            }
+            
+            if (!checkDailyImageLimit()) {
+                alert("You have reached your daily limit of 5 free AI images. Please come back tomorrow!");
+                return;
+            }
+
+            incrementImageUsage();
+            processMessage(text, 'image');
+            userInput.value = '';
         }
 
         function handleFormSubmit(e) {
@@ -122,36 +157,53 @@
             const text = userInput.value.trim();
             if (!text) return;
             userInput.value = '';
-            processMessage(text);
+            processMessage(text, 'chat');
         }
 
-        async function processMessage(text) {
+        async function processMessage(text, mode) {
             appendMessage(text, 'user', true);
             userInput.disabled = true;
             sendBtn.disabled = true;
 
-            const loadingId = appendLoading();
+            const loadingId = appendLoading(mode === 'image' ? 'Generating AI Image (takes a few seconds)...' : 'AI is thinking...');
 
             try {
-                // Pozivamo eksplicitno /ai rutu
-                const response = await fetch('/ai', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ messages: messageHistory })
-                });
+                if (mode === 'image') {
+                    const response = await fetch('/ai', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ type: 'image', prompt: text })
+                    });
 
-                const data = await response.json();
-                removeLoading(loadingId);
+                    removeLoading(loadingId);
 
-                if (data.success && data.result && data.result.response) {
-                    const aiReply = data.result.response;
-                    appendMessage(aiReply, 'ai', true);
+                    if (response.ok) {
+                        const blob = await response.blob();
+                        const imageUrl = URL.createObjectURL(blob);
+                        appendImageMessage(imageUrl, text);
+                    } else {
+                        appendMessage("Sorry, image generation failed. Try a different prompt.", 'ai', false);
+                    }
                 } else {
-                    appendMessage("Sorry, I encountered an error from AI engine. Please try again.", 'ai', false);
+                    const response = await fetch('/ai', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ type: 'chat', messages: messageHistory })
+                    });
+
+                    const data = await response.json();
+                    removeLoading(loadingId);
+
+                    if (data.success && data.result && data.result.response) {
+                        const aiReply = data.result.response;
+                        appendMessage(aiReply, 'ai', true);
+                    } else {
+                        appendMessage("Sorry, I encountered an error. Please try again.", 'ai', false);
+                    }
                 }
             } catch (err) {
                 removeLoading(loadingId);
-                appendMessage("Network error. Please check your connection or Cloudflare function deployment.", 'ai', false);
+                appendMessage("Network error. Please check your connection.", 'ai', false);
             } finally {
                 userInput.disabled = false;
                 sendBtn.disabled = false;
@@ -180,6 +232,26 @@
             }
         }
 
+        function appendImageMessage(url, promptText) {
+            const html = `
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center shrink-0 text-sm font-bold text-white">AI</div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl rounded-tl-none p-3 max-w-[85%] shadow-sm space-y-2">
+                        <p class="text-xs text-slate-400">Generated for: "${escapeHtml(promptText)}"</p>
+                        <!-- Kontejner sa slikom i vodenim žigom dole desno -->
+                        <div class="relative inline-block w-full overflow-hidden rounded-xl border border-slate-800">
+                            <img src="${url}" alt="AI Generated" class="w-full object-cover max-h-72 block">
+                            <div class="absolute bottom-2 right-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[10px] font-medium text-white/90 border border-white/10 tracking-wide pointer-events-none shadow">
+                                Made with JibuAI
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            chatWindow.insertAdjacentHTML('beforeend', html);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
         function clearHistory() {
             localStorage.removeItem('jibu_chat_history');
             messageHistory = [];
@@ -187,15 +259,14 @@
             appendMessage("Chat history cleared. How can I help you today?", 'ai', false);
         }
 
-        function appendLoading() {
+        function appendLoading(text) {
             const id = 'loading-' + Date.now();
             const html = `
                 <div id="${id}" class="flex items-start space-x-3">
                     <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center shrink-0 text-sm font-bold text-white">AI</div>
-                    <div class="bg-slate-900 border border-slate-800 rounded-2xl rounded-tl-none p-3.5 text-sm text-slate-400 flex items-center space-x-1.5">
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl rounded-tl-none p-3.5 text-sm text-slate-300 flex items-center space-x-2">
                         <span class="w-2 h-2 bg-indigo-400 rounded-full animate-bounce"></span>
-                        <span class="w-2 h-2 bg-indigo-400 rounded-full animate-bounce [animation-delay:0.2s]"></span>
-                        <span class="w-2 h-2 bg-indigo-400 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+                        <span>${text}</span>
                     </div>
                 </div>
             `;
