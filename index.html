@@ -2,7 +2,7 @@
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
     <title>Jibu AI – Free Smart AI Assistant, Chat & Image Generator</title>
     <link rel="canonical" href="https://jibuai.toolsnestt.com/">
@@ -13,12 +13,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .chat-container::-webkit-scrollbar { width: 5px; }
+        
+        * { box-sizing: border-box; }
+        html, body {
+            height: 100%;
+            height: 100dvh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #020617;
+            color: #f1f5f9;
+        }
+
+        .chat-container::-webkit-scrollbar { width: 4px; }
         .chat-container::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
+        
+        input, button, textarea { font-size: 16px !important; }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 h-[100dvh] w-screen overflow-hidden flex flex-col justify-between">
+<body class="flex flex-col justify-between">
 
     <!-- Header -->
     <header class="bg-slate-900 border-b border-slate-800 p-3 flex items-center justify-between shrink-0 z-10">
@@ -39,11 +53,11 @@
     </header>
 
     <!-- Chat Message Area -->
-    <main id="chatWindow" class="chat-container flex-1 min-h-0 overflow-y-auto p-3 space-y-3 max-w-2xl w-full mx-auto">
+    <main id="chatWindow" class="chat-container flex-1 overflow-y-auto p-3 space-y-3 max-w-2xl w-full mx-auto">
         <!-- Poruke se ucitavaju ovde -->
     </main>
 
-    <!-- Mali diskretni CTA Baner -->
+    <!-- Sponsored CTA Baner -->
     <div class="max-w-2xl w-full mx-auto px-3 py-1 shrink-0">
         <a href="https://omg10.com/4/9027972" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between bg-indigo-950/40 hover:bg-indigo-950/70 border border-indigo-500/30 rounded-lg px-3 py-1.5 transition text-xs">
             <span class="text-slate-300 flex items-center gap-1.5 truncate">
@@ -55,7 +69,7 @@
     </div>
 
     <!-- Quick Prompts & Image Counter -->
-    <div class="max-w-2xl w-full mx-auto px-3 pb-1.5 shrink-0 flex items-center justify-between gap-2 overflow-x-auto no-scrollbar">
+    <div class="max-w-2xl w-full mx-auto px-3 pb-1.5 shrink-0 flex items-center justify-between gap-2 overflow-x-auto">
         <div class="flex gap-1.5 shrink-0">
             <button onclick="sendQuickPrompt('Write a professional CV summary')" class="text-[11px] bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 px-2.5 py-1 rounded-full whitespace-nowrap transition">📝 CV</button>
             <button onclick="sendQuickPrompt('Explain how small business works')" class="text-[11px] bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 px-2.5 py-1 rounded-full whitespace-nowrap transition">💡 Business</button>
@@ -73,12 +87,12 @@
                 placeholder="Type message or image prompt..." 
                 autocomplete="off"
                 required
-                class="min-w-0 flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-indigo-500 text-slate-100 placeholder-slate-500 transition"
+                class="min-w-0 flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-indigo-500 text-slate-100 placeholder-slate-500 transition"
             >
             <button 
                 type="submit" 
                 id="sendBtn"
-                class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl font-medium text-xs sm:text-sm transition shrink-0 shadow">
+                class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2.5 rounded-xl font-medium text-sm transition shrink-0 shadow">
                 Send
             </button>
         </form>
@@ -93,16 +107,20 @@
         let messageHistory = JSON.parse(localStorage.getItem('jibu_chat_history')) || [];
 
         window.addEventListener('DOMContentLoaded', () => {
-            userInput.value = ''; // Osigurava da je input uvek prazan pri učitavanju
+            userInput.value = '';
             updateImageLimitUI();
             
-            chatWindow.innerHTML = ''; // Očisti prozor pre iscrtavanja
+            chatWindow.innerHTML = '';
             if (messageHistory.length === 0) {
                 appendMessage("Hello! I am Jibu AI. Chat with me or use the button above to generate free AI images daily!", 'ai', false);
             } else {
                 messageHistory.forEach(msg => {
                     const sender = msg.role === 'user' ? 'user' : 'ai';
-                    appendMessage(msg.content, sender, false);
+                    if (msg.type === 'image') {
+                        appendImageMessage(msg.url, msg.content, false);
+                    } else {
+                        appendMessage(msg.content, sender, false);
+                    }
                 });
             }
         });
@@ -160,43 +178,40 @@
 
         async function processMessage(text, mode) {
             appendMessage(text, 'user', true);
-            userInput.value = ''; // Odmah očisti input
+            userInput.value = '';
             userInput.disabled = true;
             sendBtn.disabled = true;
 
             const loadingId = appendLoading(mode === 'image' ? 'Generating image...' : 'Thinking...');
 
             try {
+                const response = await fetch('/ai', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(mode === 'image' ? { type: 'image', prompt: text } : { type: 'chat', messages: messageHistory })
+                });
+
+                removeLoading(loadingId);
+
+                if (!response.ok) throw new Error("Server error");
+
                 if (mode === 'image') {
-                    const response = await fetch('/ai', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ type: 'image', prompt: text })
-                    });
-                    removeLoading(loadingId);
-                    if (response.ok) {
-                        const blob = await response.blob();
-                        appendImageMessage(URL.createObjectURL(blob), text);
-                    } else {
-                        appendMessage("Image generation failed.", 'ai', false);
-                    }
+                    const blob = await response.blob();
+                    const imageUrl = URL.createObjectURL(blob);
+                    appendImageMessage(imageUrl, text, true);
                 } else {
-                    const response = await fetch('/ai', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ type: 'chat', messages: messageHistory })
-                    });
                     const data = await response.json();
-                    removeLoading(loadingId);
                     if (data.success && data.result && data.result.response) {
                         appendMessage(data.result.response, 'ai', true);
+                    } else if (typeof data.response === 'string') {
+                        appendMessage(data.response, 'ai', true);
                     } else {
                         appendMessage("Error occurred. Try again.", 'ai', false);
                     }
                 }
             } catch (err) {
                 removeLoading(loadingId);
-                appendMessage("Network error.", 'ai', false);
+                appendMessage("Network or server error. Please try again.", 'ai', false);
             } finally {
                 userInput.disabled = false;
                 sendBtn.disabled = false;
@@ -212,35 +227,46 @@
                     <div class="w-7 h-7 rounded-lg ${isUser ? 'bg-violet-600' : 'bg-indigo-600'} flex items-center justify-center shrink-0 text-xs font-bold text-white shadow">
                         ${isUser ? 'U' : 'AI'}
                     </div>
-                    <div class="${isUser ? 'bg-indigo-600 text-white rounded-tr-none' : 'bg-slate-900 border border-slate-800 text-slate-200 rounded-tl-none'} rounded-xl p-3 text-xs sm:text-sm max-w-[85%] leading-relaxed shadow-sm">
+                    <div class="${isUser ? 'bg-indigo-600 text-white rounded-tr-none' : 'bg-slate-900 border border-slate-800 text-slate-200 rounded-tl-none'} rounded-xl p-3 text-sm max-w-[85%] leading-relaxed shadow-sm">
                         ${escapeHtml(text)}
                     </div>
                 </div>
             `;
             chatWindow.insertAdjacentHTML('beforeend', html);
-            chatWindow.scrollTop = chatWindow.scrollHeight;
+            scrollToBottom();
 
             if (saveToStorage) {
-                messageHistory.push({ role: isUser ? 'user' : 'assistant', content: text });
+                messageHistory.push({ role: isUser ? 'user' : 'assistant', content: text, type: 'chat' });
                 localStorage.setItem('jibu_chat_history', JSON.stringify(messageHistory));
             }
         }
 
-        function appendImageMessage(url, promptText) {
+        function appendImageMessage(url, promptText, saveToStorage) {
             const html = `
                 <div class="flex items-start space-x-2.5">
                     <div class="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center shrink-0 text-xs font-bold text-white">AI</div>
                     <div class="bg-slate-900 border border-slate-800 rounded-xl rounded-tl-none p-2.5 max-w-[85%] shadow-sm space-y-1.5">
-                        <p class="text-[11px] text-slate-400">"${escapeHtml(promptText)}"</p>
+                        <p class="text-xs text-slate-400">"${escapeHtml(promptText)}"</p>
                         <div class="relative inline-block w-full overflow-hidden rounded-lg border border-slate-800">
-                            <img src="${url}" alt="AI" class="w-full object-cover max-h-60 block">
+                            <img src="${url}" alt="AI Generated Image" class="w-full object-cover max-h-60 block">
                             <div class="absolute bottom-1.5 right-1.5 bg-black/60 px-1.5 py-0.5 rounded text-[9px] text-white/90">JibuAI</div>
                         </div>
                     </div>
                 </div>
             `;
             chatWindow.insertAdjacentHTML('beforeend', html);
-            chatWindow.scrollTop = chatWindow.scrollHeight;
+            scrollToBottom();
+
+            if (saveToStorage) {
+                messageHistory.push({ role: 'assistant', content: promptText, type: 'image', url: url });
+                localStorage.setItem('jibu_chat_history', JSON.stringify(messageHistory));
+            }
+        }
+
+        function scrollToBottom() {
+            setTimeout(() => {
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            }, 50);
         }
 
         function clearHistory() {
@@ -263,7 +289,7 @@
                 </div>
             `;
             chatWindow.insertAdjacentHTML('beforeend', html);
-            chatWindow.scrollTop = chatWindow.scrollHeight;
+            scrollToBottom();
             return id;
         }
 
@@ -273,7 +299,8 @@
         }
 
         function escapeHtml(text) {
-            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            if (!text) return '';
+            return text.toString().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
     </script>
 </body>
