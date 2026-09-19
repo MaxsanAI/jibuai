@@ -69,7 +69,6 @@ function renderCards(containerId, result) {
       React.createElement(MonetizedContentWithCards, {
         response: result,
         theme: "dark",
-        hideResponseContainer: true,
         onCardClick: (trackingId) => {
           console.log("Imprezia card click:", trackingId);
         },
